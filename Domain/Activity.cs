@@ -1,6 +1,6 @@
 ﻿namespace Domain
 {
-    internal class Activity
+    public class Activity
     {
         public Guid Id{ get; set; }
 
