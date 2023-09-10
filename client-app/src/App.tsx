@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import axios from 'axios';
+import { Header,Button,List } from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css'
 
 function App() {
   const [activities, setActivities] = useState([]);
@@ -17,11 +19,16 @@ function App() {
   return (
     <>
       <h1>Reactiveness</h1>
-      <ul>
+      <Header as='h2' icon='users' content='Reactiveness'/>
+      <List>
         {activities.map((activity: any) => (
-          <li key={activity.id}>{activity.title}</li>
+          <List.Item key={activity.id}>
+            {activity.title}
+          </List.Item>
         ))}
-      </ul>
+      </List>
+      <Button primary>Primary</Button>
+      <Button secondary>Secondary</Button>
     </>
   )
 }
