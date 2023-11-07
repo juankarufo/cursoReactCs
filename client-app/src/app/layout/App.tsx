@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Header,Button,List } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css'
+import { Activity } from '../models/activity';
 
 function App() {
   const [activities, setActivities] = useState([]);
@@ -20,7 +21,7 @@ function App() {
       <h1>Reactiveness</h1>
       <Header as='h2' icon='users' content='Reactiveness'/>
       <List>
-        {activities.map((activity: any) => (
+        {activities.map((activity: Activity) => (
           <List.Item key={activity.id}>
             {activity.title}
           </List.Item>
