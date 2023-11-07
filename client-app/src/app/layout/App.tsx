@@ -1,6 +1,5 @@
 
 import { useEffect, useState } from 'react'
-import './App.css'
 import axios from 'axios';
 import { Header,Button,List } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css'
