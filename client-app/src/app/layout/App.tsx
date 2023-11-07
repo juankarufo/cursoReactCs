@@ -6,11 +6,11 @@ import 'semantic-ui-css/semantic.min.css'
 import { Activity } from '../models/activity';
 
 function App() {
-  const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
 
   
   useEffect( () => {
-    axios.get('http://localhost:5000/api/activities')
+    axios.get<Activity[]>('http://localhost:5000/api/activities')
     .then( response => {
       setActivities(response.data)
     })
@@ -21,7 +21,7 @@ function App() {
       <h1>Reactiveness</h1>
       <Header as='h2' icon='users' content='Reactiveness'/>
       <List>
-        {activities.map((activity: Activity) => (
+        {activities.map( activity => (
           <List.Item key={activity.id}>
             {activity.title}
           </List.Item>
