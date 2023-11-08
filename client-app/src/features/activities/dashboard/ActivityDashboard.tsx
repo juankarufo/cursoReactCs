@@ -1,7 +1,7 @@
 import { Grid } from 'semantic-ui-react';
 import { Activity } from '../../../app/models/activity';
 import ActivityList from './ActivityList';
-import ActivityDetails from './ActivityDetails';
+import ActivityDetails from '../detail/ActivityDetails';
 
 interface Props {
     activities: Activity[];
