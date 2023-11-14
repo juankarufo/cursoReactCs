@@ -1,16 +1,14 @@
 import { Button, Item, Label, Segment } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
 import { SyntheticEvent, useState } from "react";
 import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-    activities: Activity[];
-    deleteActivity: (id: string) => void;
-    submitting: boolean;
-}
 
-export default function ActivityList({activities, deleteActivity,submitting}: Props) {
+export default observer ( function ActivityList() {
 
+    const {activityStore} = useStore();
+    const {deleteActivity, activities, loading} = activityStore;
+    
     const [target, setTarget] = useState('');
 
     function handleAActivityDelete(e: SyntheticEvent<HTMLButtonElement>, id: string){
@@ -18,7 +16,6 @@ export default function ActivityList({activities, deleteActivity,submitting}: Pr
         deleteActivity(id) 
     }
 
-    const {activityStore} = useStore();
     return (
         <Segment>
             <Item.Group>
@@ -34,7 +31,7 @@ export default function ActivityList({activities, deleteActivity,submitting}: Pr
                             <Item.Extra>
                                 <Button 
                                     name={activity.id}
-                                    loading={submitting && target == activity.id} 
+                                    loading={loading && target == activity.id} 
                                     floated='right' 
                                     content='Delete' 
                                     color = 'red' 
@@ -55,4 +52,4 @@ export default function ActivityList({activities, deleteActivity,submitting}: Pr
             </Item.Group>
         </Segment>
     )
-}
+})
