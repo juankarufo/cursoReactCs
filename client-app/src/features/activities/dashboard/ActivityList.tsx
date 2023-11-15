@@ -7,7 +7,7 @@ import { observer } from "mobx-react-lite";
 export default observer ( function ActivityList() {
 
     const {activityStore} = useStore();
-    const {deleteActivity, activities, loading} = activityStore;
+    const {deleteActivity, activitiesByDate: activities, loading} = activityStore;
     
     const [target, setTarget] = useState('');
 
