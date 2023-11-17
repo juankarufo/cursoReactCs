@@ -25,6 +25,7 @@ export default class ActivityScore {
     }
 
     loadActivities = async() => {
+        this.setLoadingInitial(true);
         try {
             const activities = await agent.Activities.list();
             activities.forEach( activity => {
@@ -39,12 +40,16 @@ export default class ActivityScore {
     
     loadActivity = async(id: string) => {
         let activity = this.getActivity(id);
-        if(activity) this.selectedActivity = activity;
+        if(activity) {
+            this.selectedActivity = activity;
+            this.setLoadingInitial(false);
+        }
         else{
             this.setLoadingInitial(true);
             try {
                 activity = await agent.Activities.details(id);
                 this.setActivity(activity);
+                this.selectedActivity = activity;
                 this.setLoadingInitial(false);
             } catch (error) {
                 console.log(error);
