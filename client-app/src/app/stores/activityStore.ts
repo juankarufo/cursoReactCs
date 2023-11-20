@@ -8,7 +8,7 @@ export default class ActivityScore {
     selectedActivity: Activity | undefined = undefined;
     editMode = false;
     loading = false;
-    loadingInitial = true;
+    loadingInitial = false;
 
     constructor () {
         makeAutoObservable(this)
@@ -42,7 +42,6 @@ export default class ActivityScore {
         let activity = this.getActivity(id);
         if(activity) {
             this.selectedActivity = activity;
-            this.setLoadingInitial(false);
             return activity;
         }
         else{
