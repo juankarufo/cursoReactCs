@@ -43,6 +43,7 @@ export default class ActivityScore {
         if(activity) {
             this.selectedActivity = activity;
             this.setLoadingInitial(false);
+            return activity;
         }
         else{
             this.setLoadingInitial(true);
@@ -51,6 +52,7 @@ export default class ActivityScore {
                 this.setActivity(activity);
                 this.selectedActivity = activity;
                 this.setLoadingInitial(false);
+                return activity;
             } catch (error) {
                 console.log(error);
                 this.setLoadingInitial(false);
