@@ -14,9 +14,15 @@ namespace API.Controllers
         }
         
         [HttpGet("{id}")] // api/activities/{GUID}
-        public async Task<ActionResult<Activity>> GetActivity(Guid id)
+        public async Task<IActionResult> GetActivity(Guid id)
         {
-            return await Mediator.Send(new Details.Query {Id = id });
+            var result =  await Mediator.Send(new Details.Query {Id = id });
+
+            if (result.IsSuccess && result.Value != null)
+                return Ok(result.Value);
+            if(result.IsSuccess && result.Value == null)
+                return NotFound();
+            return BadRequest(result.Error);
         }
 
         [HttpPost]
