@@ -1,5 +1,7 @@
 ﻿using Application.Activities;
 using Application.Core;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -22,11 +24,13 @@ namespace API.Extensions
             {
                 opt.AddPolicy("MisNormas", policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000", "http://127.0.0.1:3000");
                 });
             });
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(List.Handler).Assembly));
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<Create>();
 
             return services;
         }
