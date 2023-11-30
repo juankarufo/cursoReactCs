@@ -42,4 +42,10 @@ body {
   }
   
   /*end home page styles*/
+
   
+  /* date datepicker stile */
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+  /* end date datepicker stile */

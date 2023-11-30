@@ -10,6 +10,7 @@ import { ErrorMessage,  Form, Formik } from "formik";
 import * as Yup from 'yup';
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import MyTextArea from "../../../app/common/form/MyTextArea";
+import MyDateInput from "../../../app/common/form/MyDateInput";
 import MySelectInput from "../../../app/common/form/MySelectInput";
 import { categoryOptions } from "../../../app/common/form/options/categoryOptions";
 
@@ -72,7 +73,13 @@ export default observer(function ActivityForm () {
                     <MyTextInput name='title' palceholder="description"></MyTextInput>
                     <MyTextArea rows={3} palceholder='description' name='description' />
                     <MySelectInput options={categoryOptions} palceholder='category' name='category' />
-                    <MyTextInput palceholder='date' name='date' />
+                    <MyDateInput 
+                        placeholderText='date' 
+                        name='date' 
+                        showTimeSelect
+                        timeCaption='time'
+                        dateFormat='MMMM d, yyyy h:mm aa'
+                    />
                     <MyTextInput palceholder='city' name='city' />
                     <MyTextInput palceholder='venue' name='venue' />
                     <Button loading={loading} floated='right' positive type='submit' content='Submit' name='title' />
