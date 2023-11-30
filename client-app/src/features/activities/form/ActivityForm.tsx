@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { ErrorMessage,  Form, Formik } from "formik";
 import * as Yup from 'yup';
 import MyTextInput from "../../../app/common/form/MyTextInput";
+import MyTextArea from "../../../app/common/form/MyTextArea";
 
 export default observer(function ActivityForm () {
     
@@ -67,7 +68,7 @@ export default observer(function ActivityForm () {
 
                 <Form className="ui form" onSubmit={handleSubmit} autoComplete='off'>
                     <MyTextInput name='title' palceholder="description"></MyTextInput>
-                    <MyTextInput palceholder='description' name='description' />
+                    <MyTextArea rows={3} palceholder='description' name='description' />
                     <MyTextInput palceholder='category' name='category' />
                     <MyTextInput palceholder='date' name='date' />
                     <MyTextInput palceholder='city' name='city' />
