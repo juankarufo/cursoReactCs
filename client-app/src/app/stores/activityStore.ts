@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { Activity } from "../models/activity";
 import agent from "../api/agent";
 import {v4 as uuid} from 'uuid';
+import {format} from 'date-fns';
 
 export default class ActivityScore {
     activityRegistry = new Map<string, Activity>();
@@ -22,7 +23,7 @@ export default class ActivityScore {
     get groupedActivities() {
         return Object.entries(
             this.activitiesByDate.reduce((activities, activity) => {
-                const date= activity.date!.toISOString().split('T')[0];
+                const date= format(activity.date!, 'dd MMM yyyy'); //here is not needed the time
                 activities[date] = activities[date] ? [...activities[date], activity] : [activity];
                 return activities;
             }, {} as {[key: string]: Activity[]})
