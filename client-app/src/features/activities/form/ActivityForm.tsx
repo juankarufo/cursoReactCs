@@ -1,4 +1,4 @@
-import { Button, Label, Segment } from "semantic-ui-react";
+import { Button, Header, Label, Segment } from "semantic-ui-react";
 import { useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
@@ -13,11 +13,13 @@ import MyTextArea from "../../../app/common/form/MyTextArea";
 import MyDateInput from "../../../app/common/form/MyDateInput";
 import MySelectInput from "../../../app/common/form/MySelectInput";
 import { categoryOptions } from "../../../app/common/form/options/categoryOptions";
+import {v4 as uuid} from 'uuid';
+import { router } from "../../../app/router/Routes";
 
 export default observer(function ActivityForm () {
     
     const {activityStore} = useStore();
-    const { loading, loadActivity, loadingInitial} = activityStore;
+    const { loading, loadActivity, loadingInitial, updateActivity, createActivity} = activityStore;
     const {id} = useParams();
 
     const [activity, setActivity] = useState<Activity>({
@@ -43,15 +45,17 @@ export default observer(function ActivityForm () {
         if (id) loadActivity(id).then( act => setActivity(act!));
     },[id, loadActivity])
 
-    // function handleSubmit() {
-    //     activity.id ? updateActivity(activity) : createActivity(activity);
-    //     if(!activity.id){
-    //         activity.id = uuid();
-    //         createActivity(activity).then( () => { navigate(`/activities/${activity.id}`) });
-    //     }else{
-    //         createActivity(activity).then( () => { navigate(`/activities/${activity.id}`) });
-    //     }
-    // }
+    function handleSubmit(activity: Activity) {
+        if(activity.id.length === 0){
+            let newActivity = {
+                ...activity,
+                id: uuid()
+            }
+            createActivity(newActivity).then( () => { router.navigate(`/activities/${newActivity.id}`) });
+        }else{
+            updateActivity(activity).then( () => { router.navigate(`/activities/${activity.id}`) });
+        }
+    }
 
     // function handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
     //     const {name, value} = event.target;
@@ -61,13 +65,14 @@ export default observer(function ActivityForm () {
     if(loadingInitial)  return <LoadingComponent content= 'Loading activity...'/>
     return (
         <Segment clearing>
+            <Header content='Activity Details' sub color="teal" />
             <Formik 
                 validationSchema={validationSchema}
                 enableReinitialize 
                 initialValues={activity} 
-                onSubmit={values => console.log(values)} 
+                onSubmit={values => handleSubmit(values)} 
             >
-                {({values: activity, handleChange, handleSubmit}) => (
+                {({values: activity, handleChange, handleSubmit, isValid, isSubmitting, dirty}) => (
 
                 <Form className="ui form" onSubmit={handleSubmit} autoComplete='off'>
                     <MyTextInput name='title' palceholder="description"></MyTextInput>
@@ -80,9 +85,17 @@ export default observer(function ActivityForm () {
                         timeCaption='time'
                         dateFormat='MMMM d, yyyy h:mm aa'
                     />
+                    <Header content='Location Details' sub color="teal" />
                     <MyTextInput palceholder='city' name='city' />
                     <MyTextInput palceholder='venue' name='venue' />
-                    <Button loading={loading} floated='right' positive type='submit' content='Submit' name='title' />
+                    <Button 
+                        disabled={isSubmitting || !dirty || !isValid}
+                        loading={loading} 
+                        floated='right' 
+                        positive 
+                        type='submit' 
+                        content='Submit' 
+                        name='title' />
                     <Button as={Link} to={'/activities'} floated='right' type='button' content='Cancel' name='title' />
                 </Form>
                 )}
