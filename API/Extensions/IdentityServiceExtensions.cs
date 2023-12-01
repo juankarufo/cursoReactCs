@@ -14,6 +14,7 @@ namespace API.Extensions
             })
             .AddEntityFrameworkStores<DataContext>();
 
+            services.AddAuthentication();
 
             return services;
         }
