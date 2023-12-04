@@ -15,6 +15,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors("MisNormas");
