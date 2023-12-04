@@ -6,8 +6,8 @@ import NavBar from './NavBar';
 import { observer } from 'mobx-react-lite';
 import { Outlet } from 'react-router';
 import { useLocation } from 'react-router-dom';
-import { HomePage } from '../../features/home/HomePage';
 import { ToastContainer } from 'react-toastify';
+import HomePage from '../../features/home/HomePage';
 
 function App() {
   const location = useLocation();
