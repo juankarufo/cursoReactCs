@@ -1,13 +1,9 @@
 ﻿using Domain;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Application.Activities;
-using Application.Core;
-using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
-    [AllowAnonymous] //only wihile developing frontend
     public class ActivitiesController : BaseApiController
     {
         [HttpGet] // api/activities/
