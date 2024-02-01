@@ -10,6 +10,7 @@ export default class ActivityScore {
     activityRegistry = new Map<string, Activity>();
     selectedActivity: Activity | undefined = undefined;
     editMode = false;
+    loading = false;
     loadingInitial = false;
 
     constructor () {
@@ -121,18 +122,24 @@ export default class ActivityScore {
     }
 
     deleteActivity = async (id: string) => {
+        this.loading = true;
         try {
             await agent.Activities.delete(id);
             runInAction( () => {
                 this.activityRegistry.delete(id);
+                this.loading = false;
             })
         } catch (error) {
             console.log(error);
+            runInAction( () => {
+                this.loading = false;
+            })
         }
     }
 
     updateAttendace = async () => {
         const user = store.userStore.user;
+        this.loading = true;
         try {
             await agent.Activities.attend(this.selectedActivity!.id);
             runInAction( () => {
@@ -149,6 +156,23 @@ export default class ActivityScore {
             })
         } catch (error) {
             console.log(error);
+        } finally {
+            runInAction( () => this.loading = false);
+        }
+    }
+
+    cancelActivityToggle = async () => {
+        this.loading = true;
+        try {
+            await agent.Activities.attend(this.selectedActivity!.id);
+            runInAction(() => {
+                this.selectedActivity!.isCancelled = !this.selectedActivity?.isCancelled;
+                this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!);
+            });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            this.loading = false;
         }
     }
 }
