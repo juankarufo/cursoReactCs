@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
-import { Activity } from "../../../app/models/activity";
+import { Activity, ActivityFormValues } from "../../../app/models/activity";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { Link } from "react-router-dom";
 import { ErrorMessage,  Form, Formik } from "formik";
@@ -19,18 +19,10 @@ import { router } from "../../../app/router/Routes";
 export default observer(function ActivityForm () {
     
     const {activityStore} = useStore();
-    const { loading, loadActivity, loadingInitial, updateActivity, createActivity} = activityStore;
+    const { loadActivity, loadingInitial, updateActivity, createActivity} = activityStore;
     const {id} = useParams();
 
-    const [activity, setActivity] = useState<Activity>({
-        id: '',
-        title: '',
-        date: null,
-        description: '',
-        category: '',
-        city: '',
-        venue: ''
-    })
+    const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 
     const validationSchema = Yup.object({
         title: Yup.string().required('The activity title is required'),
@@ -42,16 +34,16 @@ export default observer(function ActivityForm () {
     })
 
     useEffect( () => {
-        if (id) loadActivity(id).then( act => setActivity(act!));
+        if (id) loadActivity(id).then( activity => new ActivityFormValues(activity) );
     },[id, loadActivity])
 
-    function handleSubmit(activity: Activity) {
-        if(activity.id.length === 0){
+    function handleSubmit(activity: ActivityFormValues) {
+        if(!activity.id){
             let newActivity = {
                 ...activity,
                 id: uuid()
             }
-            createActivity(newActivity).then( () => { router.navigate(`/activities/${newActivity.id}`) });
+            createActivity(newActivity as Activity).then( () => { router.navigate(`/activities/${newActivity.id}`) });
         }else{
             updateActivity(activity).then( () => { router.navigate(`/activities/${activity.id}`) });
         }
@@ -90,7 +82,7 @@ export default observer(function ActivityForm () {
                     <MyTextInput placeholder='venue' name='venue' />
                     <Button 
                         disabled={isSubmitting || !dirty || !isValid}
-                        loading={loading} 
+                        loading={isSubmitting} 
                         floated='right' 
                         positive 
                         type='submit' 
