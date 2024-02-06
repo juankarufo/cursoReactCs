@@ -27,6 +27,7 @@ export default function ProfileHeader() {
                         <Reveal.Content hidden style={{width: '100%'}}>
                             <Button 
                                 fluid 
+                                basic
                                 color={true ? 'red' : 'green'}
                                 content={true ? 'Unfollow' : 'Follow'}
                             />
