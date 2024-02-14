@@ -12,9 +12,10 @@ interface Props {
 
 export default observer( function ProfilePhotos ({profile}: Props) {
     const {profileStore: {isCurrentUser, uploadPhoto,
-         uploading, loading, setMainPhoto}} = useStore();
+         uploading, loading, setMainPhoto, deletePhoto}} = useStore();
     const [addPhotoMode, setAddPhotoMode] = useState(false);
     const[target, setTarget]= useState(''); 
+    const[deleting,setDeleting] = useState(false);
     
     function handlePhotoUpload(file: Blob){
         uploadPhoto(file).then( () => setAddPhotoMode(false))
@@ -26,6 +27,13 @@ export default observer( function ProfilePhotos ({profile}: Props) {
 
     }
     
+    function handleDeletePhoto (photo: Photo, e: SyntheticEvent<HTMLButtonElement>) {
+        setDeleting(true);
+        setTarget(e.currentTarget.name);
+        deletePhoto(photo);
+        setDeleting(false);
+    }
+
     return (
         <Tab.Pane>
             <Grid>
@@ -56,10 +64,18 @@ export default observer( function ProfilePhotos ({profile}: Props) {
                                                 content='Main'
                                                 name={photo.id}
                                                 disabled={photo.isMain}
-                                                loading={target === photo.id && loading}
+                                                loading={!deleting && target === photo.id && loading}
                                                 onClick={e => handleSetMainPhoto(photo,e)}
                                             />
-                                            <Button basic color="red" icon='trash' />
+                                            <Button 
+                                                basic 
+                                                color="red" 
+                                                icon='trash' 
+                                                disabled={photo.isMain}
+                                                loading={target === photo.id && loading}
+                                                onClick={e => handleDeletePhoto(photo,e)}
+                                                name={photo.id}
+                                            />
                                         </Button.Group>
                                     )}
                                 </Card>
